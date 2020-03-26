@@ -24,6 +24,8 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+import ApolloProvider from "./ApolloProvider"
+
 const App: React.FC = () => {
 
   const [selectedPage, setSelectedPage] = useState('');
@@ -31,16 +33,18 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
-        <IonSplitPane contentId="main">
-          <Menu selectedPage={selectedPage} />
-          <IonRouterOutlet id="main">
-            <Route path="/page/:name" render={(props) => {
-              setSelectedPage(props.match.params.name);
-              return <Page {...props} />;
-            }} exact={true} />
-            <Route path="/" render={() => <Redirect to="/page/Inbox" />} exact={true} />
-          </IonRouterOutlet>
-        </IonSplitPane>
+        <ApolloProvider>
+          <IonSplitPane contentId="main">
+            <Menu selectedPage={selectedPage} />
+            <IonRouterOutlet id="main">
+              <Route path="/page/:name" render={(props) => {
+                setSelectedPage(props.match.params.name);
+                return <Page {...props} />;
+              }} exact={true} />
+              <Route path="/" render={() => <Redirect to="/page/Inbox" />} exact={true} />
+            </IonRouterOutlet>
+          </IonSplitPane>
+        </ApolloProvider>
       </IonReactRouter>
     </IonApp>
   );
