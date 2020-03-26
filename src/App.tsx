@@ -1,9 +1,9 @@
-import Menu from './components/Menu';
-import Page from './pages/Page';
-import React, { useState } from 'react';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import React, { useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import ApolloProvider from './ApolloProvider';
+import Menu from './components/Menu';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -24,10 +24,9 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-import ApolloProvider from "./ApolloProvider"
+import Page from './pages/Page';
 
 const App: React.FC = () => {
-
   const [selectedPage, setSelectedPage] = useState('');
 
   return (
@@ -37,11 +36,19 @@ const App: React.FC = () => {
           <IonSplitPane contentId="main">
             <Menu selectedPage={selectedPage} />
             <IonRouterOutlet id="main">
-              <Route path="/page/:name" render={(props) => {
-                setSelectedPage(props.match.params.name);
-                return <Page {...props} />;
-              }} exact={true} />
-              <Route path="/" render={() => <Redirect to="/page/Inbox" />} exact={true} />
+              <Route
+                path="/page/:name"
+                render={props => {
+                  setSelectedPage(props.match.params.name);
+                  return <Page {...props} />;
+                }}
+                exact
+              />
+              <Route
+                path="/"
+                render={() => <Redirect to="/page/Inbox" />}
+                exact
+              />
             </IonRouterOutlet>
           </IonSplitPane>
         </ApolloProvider>
