@@ -1,0 +1,46 @@
+schema:
+  - ${API_HOST:https://europe-west1-bring-n-ring.cloudfunctions.net/api/graphql}
+  - src/*.graphql
+documents: src/**/operations.graphql.ts
+generates:
+  src/schema.ts:
+    plugins:
+      - add: 
+          content: 
+            - "// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            - "// This file was automatically generated using npm run codegen"
+            - "// If you want to alter this file please do so via the above mentioned command"
+            - "// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+      - typescript
+    config:
+      maybeValue: T | undefined
+  src/:
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.tsx
+      baseTypesPath: /src/schema.ts
+    plugins:
+      - add: 
+          content: 
+            - "// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            - "// This file was automatically generated using npm run codegen"
+            - "// If you want to alter this file please do so via the above mentioned command"
+            - "// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      reactApolloVersion: 3
+      withHooks: true
+      apolloReactHooksImportFrom: "@apollo/react-hooks"
+      apolloReactCommonImportFrom: "@apollo/react-common"
+      withMutationFn: false
+      withResultType: false
+      withMutationOptionsType: false
+      withComponent: false
+      withHOC: false
+      includeDirectives: false
+overwrite: true
+hooks:
+  afterAllFileWrite:
+    - prettier --write
+    
